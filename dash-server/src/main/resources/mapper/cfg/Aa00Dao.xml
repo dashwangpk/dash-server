@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dash.server.sys.modules.cfg.dao.Aa00Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dash.server.sys.modules.cfg.entity.Aa00Entity" id="aa00Map">
+        <result property="aaa100" column="aaa100"/>
+        <result property="aaa101" column="aaa101"/>
+        <result property="aaa108" column="aaa108"/>
+        <result property="aae013" column="aae013"/>
+        <result property="aaa106" column="aaa106"/>
+        <result property="aaa107" column="aaa107"/>
+    </resultMap>
+
+
+
+</mapper>

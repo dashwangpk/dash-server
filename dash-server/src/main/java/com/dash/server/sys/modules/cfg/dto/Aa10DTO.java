@@ -1,6 +1,7 @@
-package com.dash.server.sys.modules.sys.dto;
+package com.dash.server.sys.modules.cfg.dto;
 
-import com.dash.server.sys.modules.sys.entity.Aa10Entity;
+import com.dash.server.sys.modules.cfg.entity.Aa00Entity;
+import com.dash.server.sys.modules.cfg.entity.Aa10Entity;
 import lombok.Data;
 
 import java.util.List;
@@ -11,10 +12,12 @@ public class Aa10DTO extends Aa10Entity {
     private Map<String, Object> params;
     private List<Aa10Entity> dictList;
     private List<String> aaa100s;
+    private Aa00Entity aa00;
+    private String originalAaa102;
 
     public Aa10DTO(){}
 
-    public Aa10DTO( String aaa100){
+    public Aa10DTO(String aaa100){
         setAaa100(aaa100);
     }
 

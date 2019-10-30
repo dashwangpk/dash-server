@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dash.server.sys.modules.cfg.dao.Aa10Dao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.dash.server.sys.modules.cfg.entity.Aa10Entity" id="aa10Map">
+        <result property="aaa100" column="aaa100"/>
+        <result property="aaa101" column="aaa101"/>
+        <result property="aaa102" column="aaa102"/>
+        <result property="aaa103" column="aaa103"/>
+        <result property="aae013" column="aae013"/>
+        <result property="aaa104" column="aaa104"/>
+        <result property="aaa105" column="aaa105"/>
+        <result property="aaa106" column="aaa106"/>
+        <result property="aaa107" column="aaa107"/>
+    </resultMap>
+
+    <select id="dictCount" resultType="long">
+        SELECT
+          COUNT(1) COUNT
+        FROM
+          ( SELECT  A.aaa100 FROM
+                ( SELECT aaa100, aaa101, aaa102, aaa103, aae013, aaa104, aaa105 FROM aa10 WHERE 1=1
+                    <if test="aaa100 != null ">
+                        AND aaa100 = #{aaa100}
+                    </if>
+                    <if test="aaa101 != null ">
+                        AND(  aaa101 LIKE  CONCAT('%', #{aaa101} ,'%')
+                        OR    aaa100 LIKE  CONCAT('%', #{aaa101} ,'%') )
+                    </if>
+                ) A
+             GROUP BY  A.aaa100 ) DICT
+
+    </select>
+
+    <select id="lowerDictDataList"
+            parameterType="com.dash.server.sys.modules.cfg.dto.Aa10DTO"
+            resultType="com.dash.server.sys.modules.cfg.vo.Aa10VO">
+            SELECT
+                aaa100,
+                aaa101,
+                aaa102,
+                aaa103,
+                aae013,
+                aaa104,
+                aaa105,
+                aaa106,
+                aaa107
+            FROM
+              AA10
+            WHERE
+                1=1
+            AND aaa100 = #{aa10.aaa100}
+            AND TO_NUMBER( aaa102, '9999999999999999999' ) >=
+                TO_NUMBER( #{aa10.aaa102} , '9999999999999999999')
+    </select>
+
+    <select id="dictList"
+            resultType="com.dash.server.sys.modules.cfg.vo.Aa10VO">
+        select
+          aa00.aaa100, aa00.aaa101, aa00.aaa108,aa00.aae013,aa00.aaa106, GROUP_CONCAT(aa10.aaa102, ':', aa10.aaa103) items
+        from aa00
+        left join aa10
+        on aa00.aaa100 = aa10.aaa100
+        group by
+          aa00.aaa100, aa00.aaa101, aa00.aaa108,aa00.aae013
+        order by aa00.aaa106
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+</mapper>

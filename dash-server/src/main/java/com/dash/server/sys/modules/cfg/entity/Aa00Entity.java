@@ -1,5 +1,7 @@
-package com.dash.server.sys.modules.sys.entity;
+package com.dash.server.sys.modules.cfg.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -13,29 +15,15 @@ import java.io.Serializable;
  * @date 2019-06-03 10:57:59
  */
 @Data
-@TableName("aa10")
-public class Aa10Entity implements Serializable {
+@TableName("aa00")
+public class Aa00Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 代码类别
-	 */
+	@TableId(value="aaa100",type= IdType.INPUT)
 	private String aaa100;
-	/**
-	 * 类别名称
-	 */
 	private String aaa101;
-	/**
-	 * 代码
-	 */
-	private String aaa102;
-	/**
-	 * 代码名称
-	 */
-	private String aaa103;
-	/**
-	 * 备注
-	 */
+	private String aaa108;
 	private String aae013;
-
+	private String aaa106;
+	private String aaa107;
 }
