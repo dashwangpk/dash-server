@@ -17,6 +17,7 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './permission' // permission control
 import './utils/errorLog' // error log
+import { isAuth } from './utils/auth'
 
 import * as filters from './filters' // global filters
 import Print from 'vue-print-nb'
@@ -42,6 +43,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.prototype.isAuth = isAuth // 权限方法
 
 new Vue({
   el: '#app',

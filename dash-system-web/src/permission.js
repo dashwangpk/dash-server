@@ -46,6 +46,7 @@ router.beforeEach(async(to, from, next) => {
 
           await api.sysAppMenu.userRoleMenuList({}).then(res => {
             if (res && res.data && res.data.code === 0) {
+              sessionStorage.setItem('permissions', JSON.stringify(res.data.permissions || '[]'))
               store.dispatch('user/setMenuList', res.data.userRoleMenuList)
               store.dispatch('permission/setDynamicRoutes', true)
             } else {

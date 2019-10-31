@@ -1,5 +1,8 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="getSysMenuList">
+      查询
+    </el-button>
     <el-button type="primary" @click="handleAdd">
       添加
     </el-button>
@@ -41,7 +44,7 @@
         <template slot-scope="scope">
           <el-tag v-if="scope.row.type === 0" type="info">目录</el-tag>
           <el-tag v-else-if="scope.row.type === 1" type="success">菜单</el-tag>
-          <el-tag v-else-if="scope.row.type === 2" type="info">按钮</el-tag>
+          <el-tag v-else-if="scope.row.type === 2" type="warning">按钮</el-tag>
         </template>
       </el-table-column>
       <el-table-column
@@ -51,6 +54,16 @@
       >
         <template slot-scope="scope">
           {{ scope.row.orderNum }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        min-width="100"
+        align="center"
+        :show-overflow-tooltip="true"
+        label="授权标识"
+      >
+        <template slot-scope="scope">
+          {{ scope.row.perms }}
         </template>
       </el-table-column>
       <el-table-column

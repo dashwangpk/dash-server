@@ -44,6 +44,7 @@ export default {
     return {
       visible: false,
       dataForm: {
+        name: null,
         userId: null,
         username: null,
         mobile: null,

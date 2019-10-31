@@ -15,7 +15,7 @@
         >
           <el-form-item label="类型" prop="status">
             <el-radio-group v-model="dataForm.type">
-              <el-radio v-for="(typeRadio, itemIndex) in typeRadioItems" :key="itemIndex" :label="typeRadio.typeValue" @change="typeChange(value)">{{ typeRadio.typeLable }}</el-radio>
+              <el-radio v-for="(typeRadio, itemIndex) in typeRadioItems" :key="itemIndex" :label="typeRadio.typeValue" @change="typeChange">{{ typeRadio.typeLable }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="名称" prop="name">
@@ -45,6 +45,9 @@
           <el-form-item v-if="dataForm.type === 1" label="路由" prop="url">
             <el-input v-model="dataForm.url" placeholder="路由" />
           </el-form-item>
+          <el-form-item v-if="dataForm.type !== 0" label="授权标识" prop="perms">
+            <el-input v-model="dataForm.perms" placeholder="授权标识" />
+          </el-form-item>
           <el-form-item v-if="dataForm.type === 1" label="组件名" prop="componentName">
             <el-input v-model="dataForm.componentName" placeholder="组件名" />
           </el-form-item>
@@ -56,7 +59,7 @@
           <el-form-item label="排序号" prop="orderNum">
             <el-input-number v-model="dataForm.orderNum" :min="0" width="100%" placeholder="排序号" />
           </el-form-item>
-          <el-form-item label="图标" prop="icon">
+          <el-form-item v-if="dataForm.type === 1 || dataForm.type === 0 " label="图标" prop="icon">
             <el-popover
               ref="popoverMenuIcon"
               width="390"
@@ -111,7 +114,8 @@ export default {
         parentName: '一级目录',
         parentId: 0,
         noCache: 1,
-        componentName: null
+        componentName: null,
+        perms: null
       },
       menuListTreeProps: {
         label: 'name',
@@ -119,7 +123,8 @@ export default {
       },
       typeRadioItems: [
         { typeLable: '目录', typeValue: 0 },
-        { typeLable: '菜单', typeValue: 1 }
+        { typeLable: '菜单', typeValue: 1 },
+        { typeLable: '按钮', typeValue: 2 }
       ],
       noCacheRadioItems: [
         { typeLable: '开启', typeValue: 0 },
@@ -136,7 +141,7 @@ export default {
       this.visible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
-        api.sysAppMenu.dirTree().then(res => {
+        api.sysAppMenu.dirTree({ data: { type: this.dataForm.type }}).then(res => {
           if (res && res.data && res.data.code === 0) {
             this.dirList = res.data.dirTree
           } else {
@@ -156,8 +161,10 @@ export default {
       })
     },
     dirListTreeCurrentChangeHandle(data, node) {
-      this.dataForm.parentId = data.menuId
-      this.dataForm.parentName = data.name
+      if (!data.disabled) {
+        this.dataForm.parentId = data.menuId
+        this.dataForm.parentName = data.name
+      }
     },
     iconActiveHandle(icon) {
       this.dataForm.icon = icon
@@ -166,6 +173,40 @@ export default {
       this.dataForm.url = null
       this.noCache = 1
       this.componentName = null
+      if (this.dataForm.type === 2) {
+        this.dataForm.icon = null
+      }
+      if (this.dataForm.type === 0) {
+        this.dataForm.perms = null
+      }
+
+      api.sysAppMenu.dirTree({ data: { type: this.dataForm.type }}).then(res => {
+        if (res && res.data && res.data.code === 0) {
+          this.dirList = res.data.dirTree
+        } else {
+          this.$message({ showClose: true, message: res.data.msg, type: 'error' })
+        }
+      })
+    },
+    dirFormat(data, node) {
+      console.log('---data---')
+      console.log(this.dataForm.type)
+      console.log(data)
+      console.log(node)
+      // if(this.dataForm.type === 0){
+      //   data.disabled = !(data.type === 0)
+      // }
+
+      // if(this.dataForm.type === 1){
+      //   data.disabled = !( data.type === 0)
+      // }
+
+      // if(this.dataForm.type === 2){
+      //   data.disabled = !( data.type === 1)
+      // }
+
+      // data.disabled = !( false)
+      return true
     },
     // 表单提交
     dataFormSubmit() {

@@ -22,7 +22,7 @@ const appMenu = [
   {
     name: 'dirTree',
     url: '/sys/menu/dirTree',
-    method: 'GET'
+    method: 'POST'
   },
   {
     name: 'list',

@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAddUser">
+    <el-button v-if="isAuth('sys:user:list')" type="primary" @click="getSysUserList">
+      查询
+    </el-button>
+    <el-button v-if="isAuth('sys:user:add')" type="primary" @click="handleAddUser">
       添加
     </el-button>
 
@@ -84,16 +87,16 @@
         width="320"
       >
         <template slot-scope="scope">
-          <el-button type="primary" plain size="small" @click="handleResetPassword(scope)">
+          <el-button v-if="isAuth('sys:user:resetPassword')" type="primary" plain size="small" @click="handleResetPassword(scope)">
             重置密码
           </el-button>
-          <el-button type="primary" plain size="small" @click="handleRoles(scope)">
+          <el-button v-if="isAuth('sys:user:role')" type="primary" plain size="small" @click="handleRoles(scope)">
             角色
           </el-button>
-          <el-button type="primary" plain size="small" @click="handleUpdate(scope)">
+          <el-button v-if="isAuth('sys:user:update')" type="primary" plain size="small" @click="handleUpdate(scope)">
             修改
           </el-button>
-          <el-button type="danger" plain size="small" @click="handleDelete(scope)">
+          <el-button v-if="isAuth('sys:user:delete')" type="danger" plain size="small" @click="handleDelete(scope)">
             删除
           </el-button>
         </template>

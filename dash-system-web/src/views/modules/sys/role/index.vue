@@ -1,5 +1,8 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="getSysRoleList">
+      查询
+    </el-button>
     <el-button type="primary" @click="handleAddRole">
       添加
     </el-button>
@@ -123,12 +126,10 @@ export default {
   computed: {
   },
   created() {
-    console.log('created')
     this.getSysRoleList()
   },
   methods: {
     async getSysRoleList() {
-      console.log('getSysRoleList')
       this.dataListLoading = true
       const fetchData = {
         'params': {
@@ -138,8 +139,6 @@ export default {
       }
 
       api.sysRole.list({ data: fetchData }).then(res => {
-        console.log(res)
-        console.log(res.data)
         this.dataListLoading = false
         if (res && res.data && res.data.code === 0) {
           this.sysRoleList = res.data.page.list
