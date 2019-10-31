@@ -20,6 +20,8 @@ import com.dash.server.sys.modules.sys.dto.SysUserDTO;
 import com.dash.server.sys.modules.sys.entity.SysUserEntity;
 import com.dash.server.sys.modules.sys.service.SysUserRoleService;
 import com.dash.server.sys.modules.sys.service.SysUserService;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +46,7 @@ public class SysUserController extends AbstractController {
 
 	@SysLog("删除用户")
 	@RequestMapping("/delete")
+	@RequiresPermissions("sys:user:delete")
 	public R delete(@RequestBody SysUserDTO sysUser){
 		sysUserService.delete(sysUser.getUserId());
 		return R.ok();
@@ -52,6 +55,7 @@ public class SysUserController extends AbstractController {
 	 * 所有用户列表
 	 */
 	@RequestMapping("/list")
+	@RequiresPermissions("sys:user:list")
 	public R list(@RequestBody SysUserDTO sysUser){
 		PageUtils page = sysUserService.list(sysUser);
 		return R.ok().put("page", page);
@@ -66,6 +70,7 @@ public class SysUserController extends AbstractController {
 
 	@SysLog("保存修改用户")
 	@RequestMapping("/saveUpdate")
+	@RequiresPermissions(value={"sys:user:save", "sys:user:update"}, logical= Logical.OR)
 	public R saveUpdate(@RequestBody SysUserDTO user){
 		if(user.getUserId() ==  null){
 			ValidatorUtils.validateEntity(user, AddGroup.class);
@@ -108,6 +113,7 @@ public class SysUserController extends AbstractController {
 	 * 重置密码
 	 */
 	@RequestMapping("/resetPassword")
+	@RequiresPermissions("sys:user:resetPassword")
 	public R resetPassword(@RequestBody SysUserDTO user){
 		this.sysUserService.resetPassword(user);
 		return R.ok();

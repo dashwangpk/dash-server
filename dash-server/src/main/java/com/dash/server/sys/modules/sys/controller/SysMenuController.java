@@ -90,7 +90,8 @@ public class SysMenuController extends AbstractController {
 	@GetMapping("/userRoleMenuList")
 	public R getUserRoleMenuList(){
 		List<SysMenuEntityVO> userRoleMenuList = sysMenuService.getUserRoleMenuList(getUserId());
-		return R.ok().put("userRoleMenuList", userRoleMenuList);
+		List<String> permissions = sysMenuService.userPermissions(getUserId());
+		return R.ok().put("userRoleMenuList", userRoleMenuList).put("permissions", permissions);
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class SysMenuController extends AbstractController {
 	 */
 	@GetMapping("/tree")
 	public R menuTree(){
-		List<SysMenuEntityVO> menuTree = sysMenuService.menuTree(null);
+		List<SysMenuEntityVO> menuTree = sysMenuService.menuTree(3);
 		return R.ok().put("menuTree", menuTree);
 	}
 
@@ -107,9 +108,9 @@ public class SysMenuController extends AbstractController {
 	 * 获取父子结构目录菜单
 	 * @return
 	 */
-	@GetMapping("/dirTree")
-	public R dirTree(){
-		List<SysMenuEntityVO> dirTree = sysMenuService.dirTree();
+	@RequestMapping("/dirTree")
+	public R dirTree(@RequestBody SysMenuDTO sysMenuDTO){
+		List<SysMenuEntityVO> dirTree = sysMenuService.dirTree(sysMenuDTO);
 		return R.ok().put("dirTree", dirTree);
 	}
 

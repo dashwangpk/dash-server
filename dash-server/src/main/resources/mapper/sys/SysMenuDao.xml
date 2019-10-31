@@ -11,6 +11,19 @@
 		select * from sys_menu where type != 2 order by order_num asc
 	</select>
 
+	<select id="userPermissions" parameterType="long" resultType="string">
+		SELECT DISTINCT
+			sm.perms
+		FROM
+			sys_user_role sur,
+			sys_role_menu srm,
+			sys_menu sm
+		WHERE
+			sur.user_id = #{userId}
+		AND sur.role_id = srm.role_id
+		AND sm.menu_id = srm.menu_id
+	</select>
+
 	<select id="userRoleMenuList" parameterType="long" resultType="com.dash.server.sys.modules.sys.vo.SysMenuEntityVO">
 		SELECT
 			sm.menu_id,
@@ -33,9 +46,20 @@
 		ORDER BY sm.order_num
 	</select>
 	<select id="list" parameterType="long" resultType="com.dash.server.sys.modules.sys.vo.SysMenuEntityVO">
-		select *  from sys_menu where type != 2
+		select *  from sys_menu where 1=1
 		<if test="type == 0 ">
+			and type != 2
 			and type = 0
+		</if>
+		<if test="type == 1 ">
+			and type != 2
+			and type = 0
+		</if>
+		<if test="type == 2 ">
+			and type != 2
+		</if>
+		<if test="type == 3 ">
+
 		</if>
 		order by order_num
     </select>

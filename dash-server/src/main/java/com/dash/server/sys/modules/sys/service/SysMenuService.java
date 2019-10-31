@@ -58,11 +58,13 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	 */
 	void delete(Long menuId);
 
-	List<SysMenuEntityVO> menuTree(Long type);
+	List<SysMenuEntityVO> menuTree(Integer type);
 
-	List<SysMenuEntityVO> dirTree();
+	List<SysMenuEntityVO> dirTree(SysMenuDTO sysMenuDTO);
 
 	void saveUpdate(SysMenuDTO sysMenuDTO);
 
 	SysMenuEntityVO getMenuById(Long menuId);
+
+	List<String> userPermissions(Long userId);
 }

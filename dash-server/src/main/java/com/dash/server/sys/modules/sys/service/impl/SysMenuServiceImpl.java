@@ -91,12 +91,28 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	private void getUserMenuTreeList(List<SysMenuEntityVO> menuList, SysMenuEntityVO mVO) {
-
 		for(SysMenuEntityVO cmVO : menuList){
 			if(mVO.getMenuId() == cmVO.getParentId()){
 				mVO.addChildren(cmVO);
 				cmVO.setParentName(mVO.getParentName());
-				getUserMenuTreeList( menuList, cmVO);
+				getUserMenuTreeList(menuList, cmVO);
+			}
+		}
+	}
+
+	private void getUserMenuTreeList(List<SysMenuEntityVO> menuList, SysMenuEntityVO mVO, Integer type) {
+
+		for(SysMenuEntityVO cmVO : menuList){
+			if(mVO.getMenuId() == cmVO.getParentId()){
+
+				mVO.addChildren(cmVO);
+				cmVO.setParentName(mVO.getParentName());
+				if(type == 0 || type == 1){
+					cmVO.setDisabled(cmVO.getType() == 1);
+				}else if(type == 2){
+					cmVO.setDisabled(cmVO.getType() == 0);
+				}
+				getUserMenuTreeList(menuList, cmVO, type);
 			}
 		}
 	}
@@ -110,14 +126,21 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntityVO> menuTree(Long type) {
+	public List<SysMenuEntityVO> menuTree(Integer type) {
 		List<SysMenuEntityVO> menuList = this.baseMapper.list(type);
 		List<SysMenuEntityVO> resultList = Lists.newArrayList();
 
 		for(SysMenuEntityVO mVO : menuList){
 			if(mVO.getParentId() == 0){
+
+				if(type == 0 || type == 1){
+					mVO.setDisabled(mVO.getType() == 1);
+				}else if(type == 2){
+					mVO.setDisabled(mVO.getType() == 0);
+				}
+
 				resultList.add(mVO);
-				getUserMenuTreeList(menuList, mVO);
+				getUserMenuTreeList(menuList, mVO, type);
 			}
 		}
 
@@ -125,15 +148,17 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntityVO> dirTree() {
+	public List<SysMenuEntityVO> dirTree(SysMenuDTO sysMenuDTO) {
 		List<SysMenuEntityVO> resultList = Lists.newArrayList();
 		SysMenuEntityVO oneLevel = new SysMenuEntityVO();
 		oneLevel.setParentId(-1l);
 		oneLevel.setMenuId(0l);
 		oneLevel.setName("一级目录");
 		oneLevel.setType(0);
+		//是否可选
+		oneLevel.setDisabled(sysMenuDTO.getType() == 2);
 		resultList.add(oneLevel);
-		oneLevel.setChildren(this.menuTree(0l));
+		oneLevel.setChildren(this.menuTree(sysMenuDTO.getType()));
 		return resultList;
 	}
 
@@ -151,6 +176,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	public SysMenuEntityVO getMenuById(Long menuId) {
 		SysMenuEntityVO sysMenuEntity = this.baseMapper.menuInfos(menuId);
 		return sysMenuEntity;
+	}
+
+	@Override
+	public List<String> userPermissions(Long userId) {
+		List<String> permissions = this.baseMapper.userPermissions(userId);
+		return permissions;
 	}
 
 	/**

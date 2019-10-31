@@ -15,4 +15,8 @@ public class SysMenuEntityVO extends SysMenuEntity {
         children.add(menuEntity);
     }
 
+    private Boolean disabled = false;
+
+
+
 }

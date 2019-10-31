@@ -37,7 +37,9 @@ public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
 
     List<SysMenuEntityVO> userRoleMenuList(@Param("userId") Long userId);
 
-    List<SysMenuEntityVO> list(@Param("type") Long type);
+	List<String> userPermissions(@Param("userId") Long userId);
+
+    List<SysMenuEntityVO> list(@Param("type") Integer type);
 //
 	SysMenuEntityVO menuInfos(@Param("menuId") Long menuId);
 }
