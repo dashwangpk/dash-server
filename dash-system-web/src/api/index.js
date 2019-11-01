@@ -18,6 +18,7 @@ import cfgScene from './cfg/scene'
 import cfgVpaymode from './cfg/vpaymode'
 import cfgCollectfee from './cfg/collectfee'
 import cfgChannel from './cfg/channel'
+import cfgMch from './cfg/mch'
 
 import payClientPayOrder from './client/pay-order'
 import payPayOrder from './pay/pay-order'
@@ -38,6 +39,7 @@ const api = {
   payPatternPlatform,
   payRefundTrade,
   cfgChannel,
+  cfgMch,
   // pay模块
   payStatistic,
   payBillAccount,
